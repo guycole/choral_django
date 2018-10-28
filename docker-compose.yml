@@ -2,20 +2,21 @@ version: '2'
 
 services:
   django:
-    image: httpd
+    build:
+      context: .
+      dockerfile: django.Dockerfile
+    command: python3 manage.py runserver 0.0.0.0:8000
+    image: django-choral
+    depends_on:
+      - postgres
+    ports:
+      - '8000:8000'
+    volumes:
+      - /Users/gsc/IdeaProjects/choral_py/choral:/choral
 
   postgres:
-    image: postgres:9.6
+    image: postgres:9.6.1
     environment:
       - POSTGRES_PASSWORD=worksux
     volumes:
-      - choral-data:/var/lib/postgresql/data
-
-  redis:
-    image: redis:latest
-    volumes:
-      - redisdata:/data
-  
-volumes:
-  choral-data:
-  redis-data:
+      - /var/docker/choral:/var/lib/postgresql/data
