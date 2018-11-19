@@ -14,19 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include
 from django.urls import path
 
-from django.views.generic import RedirectView
-
 urlpatterns = [
-    path('audio/v01/', include('audio.urls')),
-    path('sight/v01/', include('sight.urls')),
     path('admin/', admin.site.urls),
 ]
-
-urlpatterns += [
-    path('', RedirectView.as_view(url='/audio/v01/', permanent=True)),
-]
-
-# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

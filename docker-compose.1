@@ -1,0 +1,33 @@
+# docker-compose.yml
+
+version: '3'
+
+services:
+  postgres:
+    restart: always
+    image: postgres:9.6.1
+    container_name: choral_db
+    environment:
+      - POSTGRES_PASSWORD=developer
+    networks:
+      - choral_net
+    volumes:
+      - /var/docker/choral:/var/lib/postgresql/data
+
+  django:
+    build: .
+    command: python manage.py migrate --noinput
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - SECRET_KEY=changeme
+    ports:
+      - '8000:8000'
+    depends_on:
+      - postgres
+    networks:
+      - choral_net
+
+networks:
+  choral_net:
+#volumes:
+#  postgres_data:

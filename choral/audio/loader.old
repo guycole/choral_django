@@ -1,0 +1,60 @@
+#
+# Title: loader.py
+# Description:
+# Development Environment: OS X 10.10.5/Python 2.7.7
+# Author: G.S. Cole (guycole at gmail dot com)
+#
+import os
+import sys
+
+import xmltodict
+
+import audio.models
+
+#class ManifestXmlParser:
+
+
+class ManifestLoader:
+
+    def process_artist(self, doc):
+        #print(doc)
+
+        print(doc['album']['artist'])
+
+        artist = models.Artist.objects.create()
+
+
+    def execute(self, file_name):
+        print('execute')
+
+        if os.path.exists(file_name):
+            print("file exists")
+            with open(file_name) as fd:
+                doc = xmltodict.parse(fd.read())
+                self.process_artist(doc)
+        else:
+            print("not exist")
+
+print('start loader')
+
+#
+#
+#
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        file_name = sys.argv[1]
+    else:
+        file_name = 'unknown'
+
+    file_name = '/Users/guycole/desktop/choral/choral_wave/manifest.xml'
+
+
+
+    driver = ManifestLoader()
+    driver.execute(file_name)
+
+print('stop loader')
+
+#;;; Local Variables: ***
+#;;; mode:python ***
+#;;; End: ***

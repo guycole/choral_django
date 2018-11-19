@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Book List</h1>
+    {% if artist_list %}
+        <ul>
+            {% for artist in artist_list %}
+                <li>
+                    ({{artist.last_name}})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no known artists.</p>
+    {% endif %}
+{% endblock %}

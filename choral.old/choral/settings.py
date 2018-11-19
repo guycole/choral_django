@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8_3t=ljq28d1650yzx$1yf(3^7(jxk))7d3wlif#52i#mp)q!!'
+SECRET_KEY = 'o@=!^q+c+jmjp83#ptpx2-89xo&-hp_@bjmdj8js7%3l-%sga!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,8 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'audio.apps.AudioConfig',
-    'sight.apps.SightConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,21 +73,11 @@ WSGI_APPLICATION = 'choral.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'postgres',
-#        'USER': 'postgres',
-#        'PASSWORD': 'developer',
-#        'HOST': 'choral_db',
-#        'PORT': '5432',
-#    }
 }
 
 
@@ -130,10 +118,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static'),
-#]
-#
-##LOGIN_REDIRECT_URL = 'seeker:appuser-home'
-#LOGOUT_REDIRECT_URL = 'roamer:login'
