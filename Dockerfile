@@ -1,20 +1,35 @@
 #
-FROM python:3.7
+FROM ubuntu:16.04
 #
 ENV DJANGO_ENV dev
 #ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 #
-WORKDIR /choral
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get install -y python3 python3-pip virtualenv
+RUN apt-get install -y vim
+RUN apt-get install -y nginx
 #
-RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
 #
-ADD requirements.txt /choral
-RUN pip install -r requirements.txt
+RUN mkdir /static 
+RUN mkdir /srv/logs
 #
-COPY choral /choral/
+WORKDIR /srv/choral
+#
+ADD requirements.txt /srv/choral
+RUN pip3 install -r requirements.txt
+#
+COPY choral /srv/choral/
+#
+COPY ./docker-entrypoint.sh /srv/choral
+COPY ./django_nginx.conf /etc/nginx/sites-available/
+#
+RUN ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled/
+#
+#RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 #
 EXPOSE 8000
 #
-CMD ["python", "manage.py", "runserver"]
+#ENTRYPOINT ["/srv/choral/docker-entrypoint.sh"]
 #
