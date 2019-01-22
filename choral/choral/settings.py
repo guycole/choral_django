@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import logging
+import requests
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,8 +132,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATIC_ROOT = '/srv/choral/static/'
+STATIC_ROOT = '/static/'
 STATIC_URL = '/static/'
+#STATICFILES_DIRS = ['/static/']
 
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, 'static'),
@@ -139,3 +142,29 @@ STATIC_URL = '/static/'
 #
 ##LOGIN_REDIRECT_URL = 'seeker:appuser-home'
 #LOGOUT_REDIRECT_URL = 'roamer:login'
+
+logger = logging.getLogger(__name__)
+
+if os.getenv("DJANGO_ENV") == 'prod':
+    logger.warning('prod noted')
+
+    EC2_PRIVATE_IP = None
+
+    try:
+        resp = requests.get('http://169.254.170.2/v2/metadata')
+        data = resp.json()
+        # print(data)
+
+        container_meta = data['Containers'][0]
+        EC2_PRIVATE_IP = container_meta['Networks'][0]['IPv4Addresses'][0]
+    except:
+        # silently fail as we may not be in an ECS environment
+        pass
+
+    if EC2_PRIVATE_IP:
+        # Be sure your ALLOWED_HOSTS is a list NOT a tuple
+        # or .append() will fail
+        ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
+else:
+    logger.warning('prod not noted')
+#

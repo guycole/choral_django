@@ -1,0 +1,13 @@
+.sidebar-nav {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+li a {
+    color: green;
+}
+
+body {
+    background: wheat url("/static/audio/images/moxie.png") center no-repeat;
+}

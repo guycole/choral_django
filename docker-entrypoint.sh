@@ -14,7 +14,7 @@ echo starting gunicorn.
 #
 exec gunicorn choral.wsgi:application \
     --name choral \
-    --bind unix:django_app.sock \
+    --bind unix:gunicorn.sock \
     --workers 3 \
     --log-level=info \
     --log-file=/srv/logs/gunicorn.log \
@@ -22,3 +22,4 @@ exec gunicorn choral.wsgi:application \
 #
 echo starting nginx 
 exec service nginx start
+#
