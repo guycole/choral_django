@@ -27,8 +27,8 @@ SECRET_KEY = '8_3t=ljq28d1650yzx$1yf(3^7(jxk))7d3wlif#52i#mp)q!!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# FIXME when fargate metadata returns public IP address
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -144,27 +144,18 @@ STATIC_URL = '/static/'
 #LOGOUT_REDIRECT_URL = 'roamer:login'
 
 logger = logging.getLogger(__name__)
+logger.warning("logger warning")
 
 if os.getenv("DJANGO_ENV") == 'prod':
     logger.warning('prod noted')
-
-    EC2_PRIVATE_IP = None
-
-    try:
-        resp = requests.get('http://169.254.170.2/v2/metadata')
-        data = resp.json()
-        # print(data)
-
-        container_meta = data['Containers'][0]
-        EC2_PRIVATE_IP = container_meta['Networks'][0]['IPv4Addresses'][0]
-    except:
-        # silently fail as we may not be in an ECS environment
-        pass
-
-    if EC2_PRIVATE_IP:
-        # Be sure your ALLOWED_HOSTS is a list NOT a tuple
-        # or .append() will fail
-        ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
 else:
     logger.warning('prod not noted')
+
+try:
+    resp = requests.get('http://169.254.170.2/v2/metadata')
+    data = resp.json()
+    print(data)
+except:
+    # silently fail as we may not be in an ECS environment
+    pass
 #
