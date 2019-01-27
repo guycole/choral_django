@@ -148,14 +148,14 @@ logger.warning("logger warning")
 
 if os.getenv("DJANGO_ENV") == 'prod':
     logger.warning('prod noted')
-else:
-    logger.warning('prod not noted')
 
-try:
-    resp = requests.get('http://169.254.170.2/v2/metadata')
-    data = resp.json()
-    print(data)
-except:
-    # silently fail as we may not be in an ECS environment
-    pass
+    try:
+        resp = requests.get('http://169.254.170.2/v2/metadata')
+        data = resp.json()
+        print(data)
+    except:
+        # silently fail as we may not be in an ECS environment
+        pass
+    else:
+        logger.warning('prod not noted')
 #
